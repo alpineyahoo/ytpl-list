@@ -1,0 +1,33 @@
+#!/usr/bin/env zsh
+
+# mkdir -p ~/.cache/oauth2l
+export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:$HOME/.local/opt/google-cloud-sdk/bin"
+mkdir -p ~/.cache/ytpl-list
+prefix="https://youtube.googleapis.com/youtube/v3/playlists"
+part="snippet%2CcontentDetails%2Cid%2Cstatus%2Clocalizations" # ご自分の preference で
+page=''
+
+gcloud auth application-default print-access-token |
+sponge |
+awk '{print "Authorization: Bearer "$1}' |
+read field1 # doesn't work in bash
+field2="Accept: application/json"
+
+timestamp=$(date +"%Y%m%d-%H%M%S")
+# echo $prefix'?part='$part'&maxResults=50&mine=true&key='$apiKey |
+# maxResults は最大50
+while true
+do
+echo $prefix'?part='$part'&maxResults=50&mine=true&pageToken='$page |
+xargs curl -sL -H $field1 -H $field2 --compressed |
+read -d '' JSON
+echo $JSON >> ~/.cache/ytpl-list/$timestamp.json
+echo $JSON |
+jq -r '.nextPageToken // empty' |
+read page
+test -z "$page" && exit 1
+done
+
+# jq -r '.items.[].id' temp.json
+# jq -r '.items.[].snippet.title' temp.json
+# jq -r '.pageInfo.totalResults' temp.json | head -n 1
