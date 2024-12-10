@@ -14,15 +14,13 @@ read field1 # doesn't work in bash
 field2="Accept: application/json"
 
 timestamp=$(date +"%Y%m%d-%H%M%S")
-# echo $prefix'?part='$part'&maxResults=50&mine=true&key='$apiKey |
-# maxResults は最大50
 while true
 do
+# maxResults は仕様上最大50
 echo $prefix'?part='$part'&maxResults=50&mine=true&pageToken='$page |
 xargs curl -sL -H $field1 -H $field2 --compressed |
-read -d '' JSON
-echo $JSON >> ~/.cache/ytpl-list/$timestamp.json
-echo $JSON |
+tee -a ~/.cache/ytpl-list/$timestamp.json |
+sponge |
 jq -r '.nextPageToken // empty' |
 read page
 test -z "$page" && exit 1
