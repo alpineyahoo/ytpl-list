@@ -1,10 +1,15 @@
 #!/usr/bin/env zsh
 
 # mkdir -p ~/.cache/oauth2l
-export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:$HOME/.local/opt/google-cloud-sdk/bin"
-mkdir -p ~/.cache/ytpl-list
-prefix="https://youtube.googleapis.com/youtube/v3/playlists"
-part="snippet%2CcontentDetails%2Cid%2Cstatus%2Clocalizations" # ご自分の preference で
+export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:$HOME/.local/opt/google-cloud-sdk/bin" # gcloud 実行ファイルがあるディレクトリをパスに追加
+mkdir -p ~/.cache/ytpl-list ~/.config/ytpl-list ~/.local/share/ytpl-list
+touch ~/.config/ytpl-list/config
+source ~/.config/ytpl-list/config
+prefix="https://youtube.googleapis.com/youtube/v3"
+endpoint="$prefix/playlists"
+# endpoint="$prefix/playlistItems"
+part="snippet%2CcontentDetails%2Cid%2Cstatus%2Clocalizations" # ご自分のニーズに合わせて変更
+# part="contentDetails%2Cid%2Csnippet%2Cstatus"
 page=''
 
 gcloud auth application-default print-access-token |
@@ -17,7 +22,7 @@ timestamp=$(date +"%Y%m%d-%H%M%S")
 while true
 do
 # maxResults は仕様上最大50
-echo $prefix'?part='$part'&maxResults=50&mine=true&pageToken='$page |
+echo $endpoint'?part='$part'&maxResults=50&mine=true&pageToken='$page |
 xargs curl -sL -H $field1 -H $field2 --compressed |
 tee -a ~/.cache/ytpl-list/$timestamp.json |
 sponge |
