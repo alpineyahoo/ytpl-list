@@ -2,7 +2,7 @@
 
 # gcloud 実行ファイルがあるディレクトリをパスに追加
 export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:$HOME/.local/opt/google-cloud-sdk/bin"
-mkdir -p ~/{.cache/ytpl-list/{view,index},.config/ytpl-list,.local/share/ytpl-list}
+mkdir -p ~/{.cache/ytpl-list/{viewer,index},.config/ytpl-list,.local/share/ytpl-list}
 touch ~/.config/ytpl-list/config
 source ~/.config/ytpl-list/config # apiKey
 prefix="https://youtube.googleapis.com/youtube/v3"
