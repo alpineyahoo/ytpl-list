@@ -1,2 +1,4 @@
+json2html
 movies.html があるディレクトリで http-server コマンド実行、http://localhost:8080/movies.html で閲覧
 ~/.cache/ytpl-list/view に作成
+選んだプレイリストのJSONファイルをtmp.jsonとして利用する
