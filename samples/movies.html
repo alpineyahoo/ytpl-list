@@ -1,0 +1,20 @@
+<!DOCTIPE html>
+<html>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/json2html/2.2.3/json2html.min.js"></script>
+<script type="module">
+    
+    import data from 'http://localhost:8080/movies.json' with { type: 'json' };
+    
+    let template = {'<>':'div','html':'${title} ${year}'};
+    
+    //render
+    //document.write( json2html.render(data,template) );
+    const rendered = document.createElement('div');
+    rendered.innerHTML = json2html.render(data,template);
+    const current = document.scripts[1];
+    current.parentNode.appendChild(rendered);
+    
+</script>
+</body>
+</html>
